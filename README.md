@@ -1,240 +1,399 @@
-# World Bank - Digital Banking Platform
+# World Bank Backend API
 
-A complete digital banking platform - World Bank, built with modern technology stack.
+Complete Node.js/Express backend for the World Bank digital banking platform.
 
-## Features
+## Quick Start
 
-### 1. Core Banking
-- **World Gold Account** - Main debit account
-- **Balance Management** - Check balance, view transactions
-- **Card Management** - Create, update, delete cards
-- **ATM Withdrawals** - Withdraw from any ATM
+### Prerequisites
 
-### 2. Transfers
-- **Phone Number Transfers** - Most popular method
-- **Card to Card** - Transfer between cards
-- **Own Accounts** - Transfer between user accounts
-- **International Transfers** - Send money abroad
+- Node.js 14+ 
+- MongoDB 4.0+
+- Redis 5.0+
+- npm or yarn
 
-### 3. Payments
-- **Utilities** - Electricity, water, gas
-- **Internet/Mobile** - Beeline, Kcell, Tele2
-- **Government Services** - Taxes, fines, permits
-- **Education** - School, university fees
-- **Merchants** - Pay local businesses
+### Installation
 
-### 4. Marketplace
-- **Product Catalog** - Browse items
-- **Shopping Cart** - Add items to cart
-- **Installment Plans** - Buy now, pay later
-- **Product Reviews** - Rate and review items
+```bash
+# Install dependencies
+npm install
 
-### 5. Credit & Deposits
-- **Instant Loans** - Get loans in minutes
-- **Fixed Deposits** - Earn interest
-- **Flexible Deposits** - Withdraw anytime
-- **Loan Management** - Track payments
+# Create .env file (copy from root project .env)
+cp ../.env backend/.env
 
-### 6. QR Payments
-- Scan and pay instantly
-- Merchant QR codes
-- Quick checkout
-
-### 7. Analytics
-- **Spending Categories** - Track spending by type
-- **Monthly Reports** - Detailed analytics
-- **Cashback Tracking** - Monitor rewards
-
-### 8. Security
-- PIN protection
-- Biometric authentication
-- SMS verification
-- Two-factor authentication
-- Transaction limits
+# Start development server
+npm run dev
+```
 
 ## Project Structure
 
 ```
-World Bank/
-├── backend/                 # Node.js/Express API
-│   ├── src/
-│   │   ├── config/         # Database & environment
-│   │   ├── controllers/    # Business logic
-│   │   ├── models/         # MongoDB schemas
-│   │   ├── routes/         # API routes
-│   │   ├── services/       # Business services
-│   │   ├── middleware/     # Auth & validation
-│   │   └── utils/          # Helper functions
-│   └── package.json
+src/
+├── config/
+│   ├── database.js          # MongoDB connection
+│   └── redis.js             # Redis configuration
 │
-├── frontend/               # React Web App
-│   ├── src/
-│   │   ├── components/    # React components
-│   │   ├── pages/         # Page components
-│   │   ├── services/      # API services
-│   │   ├── context/       # React context
-│   │   ├── hooks/         # Custom hooks
-│   │   └── utils/         # Helper functions
-│   └── package.json
+├── controllers/             # Business logic (expand as needed)
+│   ├── authController.js
+│   ├── bankingController.js
+│   └── ...
 │
-├── mobile/                # React Native App
-│   ├── src/
-│   │   ├── screens/      # Mobile screens
-│   │   ├── components/   # Mobile components
-│   │   ├── services/     # API services
-│   │   ├── navigation/   # Navigation config
-│   │   └── context/      # App context
-│   └── package.json
+├── middleware/
+│   ├── auth.middleware.js   # JWT authentication
+│   ├── errorHandle.middle.js # Error handling
+│   └── validation.middleware.js # Input validation (NEW)
 │
-├── admin/                 # Admin Dashboard
-│   ├── src/
-│   │   ├── pages/       # Admin pages
-│   │   ├── components/  # Admin components
-│   │   ├── services/    # API services
-│   │   └── hooks/       # Custom hooks
-│   └── package.json
+├── models/                  # MongoDB schemas
+│   ├── User.js
+│   ├── Account.js
+│   ├── Card.js
+│   ├── Transaction.js
+│   ├── Loan.js
+│   ├── Deposit.js
+│   ├── Transfer.js
+│   ├── QRPayment.js
+│   ├── Order.js
+│   ├── Product.js
+│   ├── Cashback.js
+│   └── Installment.js
 │
-└── docker-compose.yml    # Container orchestration
+├── routes/                  # API route definitions
+│   ├── auth.routes.js
+│   ├── banking.routes.js
+│   ├── payment.routes.js
+│   ├── transfer.routes.js
+│   ├── marketplace.routes.js
+│   ├── user.routes.js
+│   ├── loan.routes.js
+│   ├── deposit.routes.js
+│   ├── qr.routes.js
+│   ├── merchant.routes.js
+│   ├── notification.routes.js
+│   └── admin.routes.js
+│
+├── services/               # Business logic services
+│   └── index.js            # Service exports
+│
+├── utils/
+│   ├── jwt.js              # JWT token generation
+│   ├── errorHandler.js     # Custom error classes (NEW)
+│   └── logger.js           # Structured logging (NEW)
+│
+├── server.js               # Express app setup
+└── tests/                  # Test files
 ```
-
-## Technology Stack
-
-### Backend
-- **Runtime**: Node.js
-- **Framework**: Express.js
-- **Database**: MongoDB
-- **Cache**: Redis
-- **Auth**: JWT + bcryptjs
-- **Payment**: Stripe
-- **SMS**: Twilio
-- **Email**: Nodemailer
-
-### Frontend
-- **Framework**: React 18
-- **Routing**: React Router
-- **State**: Zustand
-- **HTTP**: Axios
-- **Charts**: Recharts
-- **Date**: date-fns
-
-### Mobile
-- **Framework**: React Native
-- **Navigation**: React Navigation
-- **State**: Zustand
-- **HTTP**: Axios
-
-### Admin
-- **Framework**: React 18
-- **Build**: Vite
-- **Charts**: Recharts
-
-## Getting Started
-
-### Prerequisites
-- Node.js 18+
-- MongoDB
-- Docker (optional)
-
-### Installation
-
-1. **Backend Setup**
-```bash
-cd backend
-npm install
-cp .env.example .env
-npm run dev
-```
-
-2. **Frontend Setup**
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-3. **Admin Setup**
-```bash
-cd admin
-npm install
-npm run dev
-```
-
-4. **Mobile Setup**
-```bash
-cd mobile
-npm install
-npm start
-```
-
-### Docker Setup
-```bash
-docker-compose up -d
-```
-
-## API Documentation
-
-### Authentication
-- `POST /api/auth/register` - Register user
-- `POST /api/auth/login` - Login user
-- `POST /api/auth/verify-phone` - Verify OTP
-- `POST /api/auth/logout` - Logout
-
-### Banking
-- `GET /api/banking/accounts` - Get accounts
-- `GET /api/banking/balance` - Get balance
-- `POST /api/banking/deposit` - Deposit funds
-- `POST /api/banking/withdraw` - Withdraw funds
-- `GET /api/banking/cards` - Get cards
-- `POST /api/banking/cards` - Create card
-
-### Transfers
-- `POST /api/transfers/phone` - Transfer by phone
-- `POST /api/transfers/card` - Transfer by card
-- `GET /api/transfers/history` - Transfer history
-
-### Payments
-- `POST /api/payments/utilities` - Pay utilities
-- `POST /api/payments/internet` - Pay internet
-- `POST /api/payments/education` - Pay education
-- `GET /api/payments/categories` - Get categories
-
-### Marketplace
-- `GET /api/marketplace/products` - Get products
-- `POST /api/marketplace/orders` - Create order
-- `GET /api/marketplace/orders` - Get orders
-
-### User
-- `GET /api/users/profile` - Get profile
-- `GET /api/users/analytics` - Get analytics
-- `GET /api/users/cashback` - Get cashback
-- `GET /api/users/loans` - Get loans
-
-## Database Models
-
-- **User** - User accounts with KYC
-- **Account** - Bank accounts
-- **Card** - Payment cards
-- **Transaction** - Transaction history
-- **Transfer** - Fund transfers
-- **Loan** - Loan management
-- **Deposit** - Savings deposits
-- **Installment** - Payment plans
-- **Product** - Marketplace items
-- **Order** - Purchase orders
-- **Cashback** - Reward points
-- **QRPayment** - QR code payments
 
 ## Environment Variables
 
-See `.env.example` for all required environment variables.
+See `.env` file for all configuration options:
+
+```env
+# Server
+NODE_ENV=development
+PORT=5000
+
+# Database
+MONGODB_URI=mongodb://localhost:27017/world-bank
+MONGODB_USER=admin
+MONGODB_PASSWORD=admin123
+
+# Redis Cache
+REDIS_URI=redis://localhost:6379
+
+# JWT
+JWT_SECRET=your-secret-key
+JWT_EXPIRE=7d
+
+# CORS
+ALLOWED_ORIGINS=http://localhost:3000,http://localhost:3001
+
+# Email (Optional)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@gmail.com
+SMTP_PASSWORD=your-password
+
+# Twilio SMS (Optional)
+TWILIO_ACCOUNT_SID=your-account-id
+TWILIO_AUTH_TOKEN=your-token
+TWILIO_PHONE_NUMBER=+1234567890
+
+# Stripe Payment (Optional)
+STRIPE_SECRET_KEY=sk_test_xxx
+STRIPE_PUBLISHABLE_KEY=pk_test_xxx
+
+# API Configuration
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX_REQUESTS=100
+MAX_FILE_SIZE=5242880
+LOG_LEVEL=info
+```
+
+## Available Scripts
+
+```bash
+# Start development server with auto-reload
+npm run dev
+
+# Start production server
+npm start
+
+# Run tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Lint code
+npm run lint
+```
+
+## Key Features
+
+### ✅ Authentication
+- User registration and login
+- JWT token-based authentication
+- Phone number verification with OTP
+- Password security with bcryptjs
+
+### ✅ Account Management
+- Multiple account types (checking, savings, etc.)
+- Real-time balance tracking
+- Account statements
+- Card management
+
+### ✅ Transactions
+- Fund transfers (phone, card, account)
+- Payment processing
+- Transaction history
+- Transaction receipts
+
+### ✅ Credit & Savings
+- Personal loans with flexible terms
+- Fixed and flexible deposits
+- Interest calculations
+- Loan payment tracking
+
+### ✅ Marketplace
+- Product catalog
+- Shopping cart
+- Installment plans
+- Order tracking
+
+### ✅ Security
+- Rate limiting on all endpoints
+- Input validation and sanitization
+- HTTPS/TLS in production
+- CORS configuration
+- Helmet.js security headers
+
+### ✅ Logging & Monitoring
+- Structured logging system
+- Request/response logging
+- Performance monitoring
+- Error tracking
+
+## API Endpoints
+
+### Authentication
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - User login
+- `POST /api/auth/verify-phone` - Verify phone with OTP
+- `POST /api/auth/logout` - Logout user
+
+### Banking
+- `GET /api/banking/accounts` - Get user accounts
+- `GET /api/banking/balance` - Get account balance
+- `GET /api/banking/cards` - Get user cards
+- `POST /api/banking/deposit` - Deposit funds
+
+### Payments
+- `POST /api/payments/make` - Make payment
+- `GET /api/payments/history` - Get payment history
+
+### Transfers
+- `POST /api/transfers/send` - Send money
+- `POST /api/transfers/card-to-card` - Card to card transfer
+
+### Loans
+- `GET /api/loans/available` - Get available loan products
+- `POST /api/loans/apply` - Apply for loan
+- `GET /api/loans/:id` - Get loan details
+
+### More endpoints in [API_DOCUMENTATION.md](../API_DOCUMENTATION.md)
+
+## Database Design
+
+### Core Collections
+
+**Users**
+```javascript
+{
+  _id: ObjectId,
+  firstName: String,
+  lastName: String,
+  email: String (unique),
+  phone: String (unique),
+  password: String (hashed),
+  dateOfBirth: Date,
+  idNumber: String,
+  address: {
+    street: String,
+    city: String,
+    zipCode: String,
+    country: String
+  },
+  role: enum(['user', 'merchant', 'admin']),
+  status: enum(['active', 'suspended', 'blocked']),
+  kycStatus: String,
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+**Accounts**
+```javascript
+{
+  _id: ObjectId,
+  userId: ObjectId (ref: User),
+  accountNumber: String (unique),
+  accountType: String,
+  balance: Number,
+  currency: String,
+  status: String,
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+**Transactions**
+```javascript
+{
+  _id: ObjectId,
+  userId: ObjectId (ref: User),
+  fromAccount: ObjectId (ref: Account),
+  toAccount: ObjectId (ref: Account),
+  amount: Number,
+  type: enum(['transfer', 'payment', 'deposit', 'withdrawal']),
+  status: enum(['pending', 'completed', 'failed']),
+  description: String,
+  referenceNumber: String,
+  createdAt: Date
+}
+```
+
+See individual model files for complete schemas.
+
+## Error Handling
+
+The application uses custom error classes:
+
+```javascript
+// Examples
+throw new BadRequestError('Invalid email format');
+throw new UnauthorizedError('Token expired');
+throw new NotFoundError('User');
+throw new ConflictError('User with this email already exists');
+throw new ValidationError('Validation failed', errors);
+```
+
+## Middleware Stack
+
+1. **helmet** - Security headers
+2. **cors** - Cross-origin requests
+3. **express.json** - JSON parsing
+4. **requestLogger** - Request logging
+5. **performanceMonitor** - Performance tracking
+6. **routes** - API routes
+7. **404 handler** - Route not found
+8. **globalErrorHandler** - Centralized error handling
+
+## Testing
+
+### Unit Tests
+```bash
+npm test
+```
+
+### Running Specific Tests
+```bash
+npm test -- --testNamePattern="auth"
+```
+
+### Test Coverage
+```bash
+npm test -- --coverage
+```
+
+## Performance Tips
+
+1. **Database Indexing** - Create indexes on frequently queried fields
+2. **Redis Caching** - Cache frequently accessed data
+3. **Pagination** - Always paginate list endpoints
+4. **Query Optimization** - Use select() to limit fields
+5. **Connection Pooling** - MongoDB manages this automatically
+
+## Deployment
+
+### Docker
+```bash
+docker build -t world-bank-api .
+docker run -p 5000:5000 --env-file .env world-bank-api
+```
+
+### Docker Compose
+```bash
+docker-compose up -d backend
+```
+
+### Environment for Production
+```env
+NODE_ENV=production
+JWT_SECRET=use-strong-random-key
+MONGODB_URI=production-mongodb-uri
+```
+
+## Troubleshooting
+
+### MongoDB Connection Failed
+- Ensure MongoDB is running: `mongod`
+- Check MONGODB_URI in .env
+- Verify credentials
+
+### Redis Connection Failed
+- Ensure Redis is running: `redis-server`
+- Check REDIS_URI in .env
+
+### Port Already in Use
+```bash
+# Kill process on port 5000
+lsof -ti:5000 | xargs kill -9
+```
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+1. Create a new branch for your feature
+2. Make changes and write tests
+3. Submit a pull request
+4. Code review and merge
+
+## Security Checklist
+
+- [ ] All inputs are validated
+- [ ] Sensitive data is not logged
+- [ ] Use environment variables for secrets
+- [ ] HTTPS enabled in production
+- [ ] CORS properly configured
+- [ ] Rate limiting enabled
+- [ ] SQL/NoSQL injection prevention
+- [ ] XSS prevention with helmet.js
+- [ ] Passwords are bcrypted
+
+## Resources
+
+- [Express.js Documentation](https://expressjs.com/)
+- [Mongoose Documentation](https://mongoosejs.com/)
+- [JWT Best Practices](https://tools.ietf.org/html/rfc7519)
+- [OWASP Security Guidelines](https://owasp.org/)
 
 ## License
 
@@ -242,4 +401,7 @@ MIT
 
 ## Support
 
-For support, email support@worldbank.com or open an issue on GitHub.
+- Email: backend@worldbank.com
+- Documentation: [API Documentation](../API_DOCUMENTATION.md)
+- Issues: [Improvements](../IMPROVEMENTS.md)
+
