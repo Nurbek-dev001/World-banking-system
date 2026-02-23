@@ -1,73 +1,96 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AdminAuthProvider } from './context/AdminAuthContext';
-import ProtectedRoute from './components/ProtectedRoute';
-import AdminHeader from './components/AdminHeader';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Navigation from './components/Navigation';
 import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
-import AllUsersPage from './pages/AllUsersPage';
-import TransactionsPage from './pages/TransactionsPage';
-import ReportsPage from './pages/ReportsPage';
-import SettingsPage from './pages/SettingsPage';
-import ClientsManagement from './components/ClientsManagement';
+import TransfersPage from './pages/TransfersPage';
+import PaymentsPage from './pages/PaymentsPage';
+import MarketplacePage from './pages/MarketplacePage';
+import ProfilePage from './pages/ProfilePage';
+import LoansPage from './pages/LoansPage';
+import DepositsPage from './pages/DepositsPage';
+import AnalyticsPage from './pages/AnalyticsPage';
+import { useAuth } from './hooks';
+
+const ProtectedRoute = ({ children }) => {
+  const { token } = useAuth();
+  return token ? children : <Navigate to="/login" />;
+};
 
 function App() {
   return (
-    <AdminAuthProvider>
-      <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-        <AdminHeader />
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <DashboardPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/users"
-            element={
-              <ProtectedRoute>
-                <AllUsersPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/clients"
-            element={
-              <ProtectedRoute>
-                <ClientsManagement />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/transactions"
-            element={
-              <ProtectedRoute>
-                <TransactionsPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/reports"
-            element={
-              <ProtectedRoute>
-                <ReportsPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/settings"
-            element={
-              <ProtectedRoute>
-                <SettingsPage />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-      </Router>
-    </AdminAuthProvider>
+    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <Navigation />
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/transfers"
+          element={
+            <ProtectedRoute>
+              <TransfersPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/payments"
+          element={
+            <ProtectedRoute>
+              <PaymentsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/marketplace"
+          element={
+            <ProtectedRoute>
+              <MarketplacePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/loans"
+          element={
+            <ProtectedRoute>
+              <LoansPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/deposits"
+          element={
+            <ProtectedRoute>
+              <DepositsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/analytics"
+          element={
+            <ProtectedRoute>
+              <AnalyticsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </Router>
   );
 }
 

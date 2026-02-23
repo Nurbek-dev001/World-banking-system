@@ -1,129 +1,133 @@
-import React from 'react';
-import { Container, Row, Col, Card, ListGroup, Badge, Button } from 'react-bootstrap';
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Container, Row, Col, Card, Button, ListGroup, Badge } from 'react-bootstrap';
+import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-const chartData = [
-  { date: '2026-02-11', users: 1250, transactions: 5430, volume: 125000000 },
-  { date: '2026-02-12', users: 1340, transactions: 6120, volume: 145000000 },
-  { date: '2026-02-13', users: 1420, transactions: 6890, volume: 165000000 },
-  { date: '2026-02-14', users: 1510, transactions: 7200, volume: 172000000 },
-  { date: '2026-02-15', users: 1680, transactions: 7850, volume: 188000000 },
-  { date: '2026-02-16', users: 1825, transactions: 8340, volume: 198000000 },
-  { date: '2026-02-17', users: 1950, transactions: 8920, volume: 210000000 }
+const mockData = [
+  { month: 'Jan', spending: 45000, income: 150000 },
+  { month: 'Feb', spending: 52000, income: 150000 },
+  { month: 'Mar', spending: 48000, income: 150000 },
+  { month: 'Apr', spending: 61000, income: 150000 },
+  { month: 'May', spending: 55000, income: 150000 },
+  { month: 'Jun', spending: 67000, income: 150000 }
 ];
 
 export const DashboardPage = () => {
-  return (
-    <Container fluid className="py-4">
-      <h1 className="mb-4">Admin Dashboard</h1>
+  const navigate = useNavigate();
+  const [balance] = useState(450320.50);
 
-      {/* KPI Cards */}
+  return (
+    <Container className="py-4">
+      <h1 className="mb-4">Dashboard</h1>
+
       <Row className="mb-4">
-        <Col md={3}>
-          <Card className="shadow">
-            <Card.Body className="text-center">
-              <h6 className="text-muted">Total Users</h6>
-              <h2 className="text-primary">1,950</h2>
-              <small className="text-success">↑ 12% this week</small>
+        <Col lg={4}>
+          <Card className="bg-success text-white shadow">
+            <Card.Body>
+              <h6 className="text-uppercase mb-2">Balance</h6>
+              <h2>₸ {balance.toLocaleString('en-US', { maximumFractionDigits: 2 })}</h2>
+              <small className="text-light">World Gold Account</small>
             </Card.Body>
           </Card>
         </Col>
-        <Col md={3}>
-          <Card className="shadow">
-            <Card.Body className="text-center">
-              <h6 className="text-muted">Total Transactions</h6>
-              <h2 className="text-info">8,920</h2>
-              <small className="text-success">↑ 8% this week</small>
+        <Col lg={4}>
+          <Card className="bg-info text-white shadow">
+            <Card.Body>
+              <h6 className="text-uppercase mb-2">This Month Spending</h6>
+              <h2>₸ 67,000</h2>
+              <small className="text-light">6 transactions</small>
             </Card.Body>
           </Card>
         </Col>
-        <Col md={3}>
-          <Card className="shadow">
-            <Card.Body className="text-center">
-              <h6 className="text-muted">Transaction Volume</h6>
-              <h2 className="text-success">₸ 210B</h2>
-              <small className="text-success">↑ 15% this week</small>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col md={3}>
-          <Card className="shadow">
-            <Card.Body className="text-center">
-              <h6 className="text-muted">Active Sessions</h6>
-              <h2 className="text-warning">342</h2>
-              <small className="text-muted">Right now</small>
+        <Col lg={4}>
+          <Card className="bg-warning text-white shadow">
+            <Card.Body>
+              <h6 className="text-uppercase mb-2">Cashback</h6>
+              <h2>₸ 1,350</h2>
+              <small className="text-light">Available to use</small>
             </Card.Body>
           </Card>
         </Col>
       </Row>
 
-      {/* Charts */}
       <Row className="mb-4">
-        <Col lg={8}>
+        <Col>
+          <h5 className="mb-3">Quick Actions</h5>
+          <div className="d-flex gap-2 flex-wrap">
+            <Button 
+              variant="outline-primary" 
+              size="sm"
+              onClick={() => navigate('/transfers')}
+            >
+              💸 Send Money
+            </Button>
+            <Button 
+              variant="outline-primary" 
+              size="sm"
+              onClick={() => navigate('/payments')}
+            >
+              💳 Pay Bills
+            </Button>
+            <Button 
+              variant="outline-primary" 
+              size="sm"
+              onClick={() => navigate('/marketplace')}
+            >
+              🛒 Shop
+            </Button>
+            <Button 
+              variant="outline-primary" 
+              size="sm"
+              onClick={() => alert('Send request to contact')}
+            >
+              💰 Request Money
+            </Button>
+            <Button 
+              variant="outline-primary" 
+              size="sm"
+              onClick={() => navigate('/loans')}
+            >
+              🏦 Get Loan
+            </Button>
+          </div>
+        </Col>
+      </Row>
+
+      <Row className="mb-4">
+        <Col lg={6}>
           <Card className="shadow">
             <Card.Header className="bg-light">
-              <h6 className="mb-0">Users Growth Trend</h6>
+              <h6 className="mb-0">Income vs Spending</h6>
             </Card.Header>
             <Card.Body>
               <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={chartData}>
+                <LineChart data={mockData}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date" style={{ fontSize: '12px' }} />
+                  <XAxis dataKey="month" />
                   <YAxis />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="users" stroke="#0066cc" strokeWidth={2} />
+                  <Tooltip formatter={(value) => `₸ ${value.toLocaleString()}`} />
+                  <Legend />
+                  <Line type="monotone" dataKey="income" stroke="#28a745" />
+                  <Line type="monotone" dataKey="spending" stroke="#dc3545" />
                 </LineChart>
               </ResponsiveContainer>
             </Card.Body>
           </Card>
         </Col>
-
-        <Col lg={4}>
+        <Col lg={6}>
           <Card className="shadow">
             <Card.Header className="bg-light">
-              <h6 className="mb-0">System Status</h6>
-            </Card.Header>
-            <ListGroup variant="flush">
-              <ListGroup.Item className="d-flex justify-content-between">
-                <span>API Server</span>
-                <Badge bg="success">Online</Badge>
-              </ListGroup.Item>
-              <ListGroup.Item className="d-flex justify-content-between">
-                <span>Database</span>
-                <Badge bg="success">Online</Badge>
-              </ListGroup.Item>
-              <ListGroup.Item className="d-flex justify-content-between">
-                <span>Cache</span>
-                <Badge bg="success">Online</Badge>
-              </ListGroup.Item>
-              <ListGroup.Item className="d-flex justify-content-between">
-                <span>Email Service</span>
-                <Badge bg="success">Online</Badge>
-              </ListGroup.Item>
-              <ListGroup.Item className="d-flex justify-content-between">
-                <span>SMS Service</span>
-                <Badge bg="warning">Degraded</Badge>
-              </ListGroup.Item>
-            </ListGroup>
-          </Card>
-        </Col>
-      </Row>
-
-      {/* Transaction Volume Chart */}
-      <Row className="mb-4">
-        <Col>
-          <Card className="shadow">
-            <Card.Header className="bg-light">
-              <h6 className="mb-0">Transaction Volume Trend</h6>
+              <h6 className="mb-0">Spending by Category</h6>
             </Card.Header>
             <Card.Body>
               <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={chartData}>
+                <BarChart data={mockData}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date" style={{ fontSize: '12px' }} />
+                  <XAxis dataKey="month" />
                   <YAxis />
-                  <Tooltip formatter={(value) => `₸ ${(value / 1000000000).toFixed(0)}B`} />
-                  <Bar dataKey="volume" fill="#28a745" />
+                  <Tooltip formatter={(value) => `₸ ${value.toLocaleString()}`} />
+                  <Legend />
+                  <Bar dataKey="spending" fill="#ffc107" />
                 </BarChart>
               </ResponsiveContainer>
             </Card.Body>
@@ -131,36 +135,56 @@ export const DashboardPage = () => {
         </Col>
       </Row>
 
-      {/* Recent Activities */}
       <Row>
-        <Col>
+        <Col lg={8}>
           <Card className="shadow">
             <Card.Header className="bg-light">
-              <h6 className="mb-0">Recent System Activities</h6>
+              <h6 className="mb-0">Recent Transactions</h6>
             </Card.Header>
             <ListGroup variant="flush">
               {[
-                { time: '2 minutes ago', event: 'User registration', user: 'admin@world.kz', status: 'success' },
-                { time: '5 minutes ago', event: 'Large transaction', user: 'transaction #12345', status: 'success' },
-                { time: '12 minutes ago', event: 'User verification', user: 'user@example.com', status: 'pending' },
-                { time: '25 minutes ago', event: 'Account locked', user: 'user@blocked.com', status: 'warning' },
-                { time: '1 hour ago', event: 'System backup', user: 'System', status: 'success' }
-              ].map((activity, i) => (
+                { type: 'Payment', desc: 'Electricity Bill', amount: -8500, date: 'Today' },
+                { type: 'Transfer', desc: 'John Doe', amount: -50000, date: 'Yesterday' },
+                { type: 'Salary', desc: 'Monthly Income', amount: 150000, date: '2 days ago' },
+                { type: 'Shopping', desc: 'Online Store', amount: -25000, date: '3 days ago' }
+              ].map((tx, i) => (
                 <ListGroup.Item key={i} className="d-flex justify-content-between align-items-center">
                   <div>
-                    <h6 className="mb-0">{activity.event}</h6>
-                    <small className="text-muted">{activity.user} • {activity.time}</small>
+                    <h6 className="mb-0">{tx.desc}</h6>
+                    <small className="text-muted">{tx.type} • {tx.date}</small>
                   </div>
-                  <Badge 
-                    bg={
-                      activity.status === 'success' ? 'success' :
-                      activity.status === 'warning' ? 'warning' : 'info'
-                    }
-                  >
-                    {activity.status}
-                  </Badge>
+                  <span className={tx.amount > 0 ? 'text-success fw-bold' : 'text-danger fw-bold'}>
+                    {tx.amount > 0 ? '+' : ''} ₸ {Math.abs(tx.amount).toLocaleString()}
+                  </span>
                 </ListGroup.Item>
               ))}
+            </ListGroup>
+          </Card>
+        </Col>
+        <Col lg={4}>
+          <Card className="shadow">
+            <Card.Header className="bg-light">
+              <h6 className="mb-0">🎁 Offers</h6>
+            </Card.Header>
+            <ListGroup variant="flush">
+              <ListGroup.Item>
+                <div className="d-flex justify-content-between align-items-center">
+                  <div>
+                    <h6 className="mb-1">5% Cashback</h6>
+                    <small className="text-muted">Shopping Category</small>
+                  </div>
+                  <Badge bg="success">NEW</Badge>
+                </div>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <div>
+                  <h6 className="mb-1">Free Transfer</h6>
+                  <small className="text-muted">First 10 transfers</small>
+                </div>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Button variant="info" size="sm" className="w-100">View All Offers</Button>
+              </ListGroup.Item>
             </ListGroup>
           </Card>
         </Col>

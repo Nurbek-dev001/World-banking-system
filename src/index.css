@@ -19,23 +19,44 @@ body {
 }
 
 .container {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
 }
 
-div, h1, h2, h3, h4, h5, h6, p {
+button {
+  cursor: pointer;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+input, textarea, select {
+  width: 100%;
   padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  family: inherit;
 }
 
-h1 {
-  font-size: 28px;
-  margin-bottom: 20px;
-  color: #2c3e50;
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
 }
 
-h2 {
-  font-size: 24px;
-  margin: 15px 0 10px 0;
-  color: #34495e;
+.dashboard, .login, .register, .transfers, .payments, .marketplace,
+.profile, .loans, .deposits, .analytics {
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
